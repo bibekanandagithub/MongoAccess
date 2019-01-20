@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<root>
+  <configuration>
+  <remotePath>C:\builds</remotePath> <!--where all server files situated this line help to view all the folder in treeview-->
+  <DirectoryPath>C:\builds</DirectoryPath>  <!--local drive where data is stored-->
+  <NameofConfigFile>ConfigFiles</NameofConfigFile> <!--the folder where all the config files are stored-->
+    <initializeTestcase>Initialize_wellsTestcase</initializeTestcase>
+    <InitializeServerTC>Initialize_ServerTestcase</InitializeServerTC>
+    <SuiteID>458963</SuiteID>
+    <TodayReleseName></TodayReleseName>
+    <Enviornment>STG</Enviornment>
+    <AdditionalFolder>LUI,PUI</AdditionalFolder>  <!--in treeview we need some additional folder to disply because they do not any test-->
+    <SourceType>CORE,LIS,ACAPS,OPUS,UCDP,EAD,ISELECT,AVM</SourceType>
+    <SourceSubType>Centralized,Distributed</SourceSubType>
+    <WellsSharedParameterSpecific>SharedParameters/ProjectSpecific</WellsSharedParameterSpecific>
+    <WellsSharedParameterSpecificXML>Parameters_WellsSpecific.xml</WellsSharedParameterSpecificXML>
+    <WellsSharedParameterSourceTypeXpath>/Configuration/SOURCE_TYPE_VALUES/PARAMETERS/SourceType</WellsSharedParameterSourceTypeXpath>
+    <WellsSharedParameterSourceSubTypeXpath>/Configuration/SOURCE_TYPE_VALUES/PARAMETERS/SourceSubType</WellsSharedParameterSourceSubTypeXpath>
+    <WellsSharedParameterSourceTypeXpathOnlyPara>/Configuration/SOURCE_TYPE_VALUES/PARAMETERS</WellsSharedParameterSourceTypeXpathOnlyPara>
+    <DisplayCurrentFile>false</DisplayCurrentFile>
+    <ShouldSpeak>Yes</ShouldSpeak>  <!--value is  "Yes" or "No" -->
+    <MyVsPath>C:\Users\HQQAAUTOMATION\Documents\visual studio 2017\Projects\Asp46\Asp46</MyVsPath>
+    <isBatchFileDelete>No</isBatchFileDelete>
+    <!--value is  "Yes" or "No" -->
+    <isConfigFileDelete>No</isConfigFileDelete>
+    <!--value is  "Yes" or "No" -->
+    <MachineType>Wells,BAT,REGRESSION,HealthCheck,ResourceAlloted</MachineType>
+    <DistributionScriptLocation>\\Desktop-7j20c26\c\TestBuild\DistributionScripts</DistributionScriptLocation>
+    <CloseServices>Firefox,Chrome,InternetExplorer,cmd,Powershell,ChromeDriver</CloseServices>
+    <BrowserDriverPath>C:\Builds\BrowserDrivers</BrowserDriverPath>
+        
+</configuration>
+</root>
+  
