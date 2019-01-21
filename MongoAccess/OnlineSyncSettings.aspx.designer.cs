@@ -22,15 +22,6 @@ namespace MongoAccess {
         protected global::System.Web.UI.WebControls.Label lbl_erromessage;
         
         /// <summary>
-        /// txt_path control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txt_path;
-        
-        /// <summary>
         /// btn_upload control.
         /// </summary>
         /// <remarks>

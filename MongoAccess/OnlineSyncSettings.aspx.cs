@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Bibekanand.GlobalClasses;
+using Bibekanand.MongoAccess.MongoClass;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,6 +14,7 @@ namespace MongoAccess
 {
     public partial class WebForm5 : System.Web.UI.Page
     {
+        MongoAccessDb obj = new MongoAccessDb();
         string productType_Value = string.Empty;
         string TestSetting_value = string.Empty;
         string Class_Value = string.Empty;
@@ -24,12 +27,12 @@ namespace MongoAccess
         string SourceSubType = string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
-            SyncTc(@"C:\builds");
+            PopupMessage("hi");
         }
 
         protected void btn_upload_Click(object sender, EventArgs e)
         {
-
+            SyncTc(@"C:\builds");
         }
 
         public static string GetTagValue(string tagname, string xmlfilepath)
@@ -60,9 +63,7 @@ namespace MongoAccess
             XmlNodeList configNodename = pathretrivedoc.GetElementsByTagName("NameofConfigFile");
             foreach (XmlNode xcollectnode in elemList)
             {
-
                 #endregion
-
                 string storepath = null;
                 storepath = xcollectnode.InnerText.ToString();
                 if (Directory.Exists(storepath))
@@ -70,8 +71,6 @@ namespace MongoAccess
                     foreach (string conlist in Directory.GetDirectories(storepath))
                     {
                         string includeconfig = conlist + "\\" + configNodename[0].InnerText;
-
-
                         if (Directory.Exists(includeconfig))
                         {
                             foreach (string one in Directory.EnumerateFiles(includeconfig, "*.xml"))
@@ -84,32 +83,25 @@ namespace MongoAccess
                                 Subject_value = GetTagValue("subject", one);
                                 Dll_value = GetTagValue("dll", one);
                                 Email_value = GetTagValue("email", one);
-                               
-
-
                                 XmlNodeList columnnode = xdoc.DocumentElement.SelectNodes("tests/test");
                                 //  / Configuration / exportParameters / Parameter
                                 XmlNodeList parameters = xdoc.DocumentElement.SelectNodes("/Configuration/exportParameters/Parameter");
                                 if (parameters != null && parameters.Count > 0)
                                 {
                                     foreach (XmlNode xnode in parameters)
-                                    {
-                                       
+                                    {                                       
                                         if(xnode.Attributes[0].Value== "SourceType")
                                         {
-                                            SourceType = xnode.InnerText;
-                                           
+                                            SourceType = xnode.InnerText;                                           
                                         }
                                         if (xnode.Attributes[0].Value == "SourceSubType")
                                         {
                                             SourceSubType = xnode.InnerText;
-
                                         }
 
                                     }
                                 }
-
-
+                                
                                 foreach (XmlNode xnode in columnnode)
                                 {
                                     if (xnode.Attributes != null && xnode.Attributes.Count > 0)
@@ -141,7 +133,7 @@ namespace MongoAccess
                 }
                 else
                 {
-                   // MessageBox.Show("Remote Directory does not exists !!!");
+                    PopupMessage("Remote Directory does not exists !!!");
                 }
             }
 
@@ -156,7 +148,7 @@ namespace MongoAccess
 
             foreach (var clist in UniqIDs)
             {
-              //  Helper_Automation.InsertRecords(clist.ProductType, clist.TestSetting, clist.dll, clist.Email);
+               
             }
 
 
@@ -168,11 +160,42 @@ namespace MongoAccess
             foreach (var clist in allIDs)
             {
 
-              //  Helper_Automation.InsertRecords(clist.ProductType, clist.TestSettings, clist.Dll, clist.Subject, clist.Class, clist.TestcaseID, clist.TestcaseName);
+                var doc = new MongoDB.Bson.BsonDocument
+                {
+
+                {"ProductType" ,clist.ProductType },
+                { "TestSetting" ,  clist.TestSettings },
+                 { "ClassSetting" ,  clist.Class },
+                  { "dll" ,  clist.Dll },
+                   { "email" ,  clist.Email },
+                    { "testID" ,  clist.TestcaseID },
+                     { "testCaseName" ,  clist.TestcaseName },
+                      { "SourceType" ,  SourceType },
+                      { "SourceSubType" , SourceSubType },
+                      { "subject" ,  clist.Subject },
+                      { "CreatedBy" , "Bibekananda Panigrahi Time 20012019" },
+            };
+                var condition = new MongoDB.Bson.BsonDocument
+            {
+                {"testID" ,  clist.TestcaseID },
+
+            };
+
+                lbl_erromessage.Text = obj.InsertSingleClass(doc, GlobalClass.configTable,true, condition);
             }
 
             stopWatch.Stop();
-           // MessageBox.Show(string.Format("Sync execution time = {0} seconds", stopWatch.Elapsed.TotalSeconds));
+            lbl_erromessage.Text = string.Format("Sync execution time = {0} seconds", stopWatch.Elapsed.TotalSeconds);
+        }
+        public static void PopupMessage(string message)
+        {
+            string cleanMessage = message.Replace("'", "\'");
+            Page page = HttpContext.Current.CurrentHandler as Page;
+            string script = string.Format("alert('{0}');", cleanMessage);
+            if (page != null && !page.ClientScript.IsClientScriptBlockRegistered("alert"))
+            {
+                page.ClientScript.RegisterClientScriptBlock(page.GetType(), "alert", script, true /* addScriptTags */);
+            }
         }
     }
 
